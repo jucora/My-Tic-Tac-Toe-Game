@@ -1,33 +1,31 @@
-module main
-
-    def get_inputs
+module UserInteraction
+    def get_rol
         puts "\nWELCOME TO THE TIC TAC TOE GAME"
         puts "==========================="
         puts "Which player do you prefer?"
         puts "1 for X or 2 for O"
         puts "==========================="
-        @rol = gets.chomp.to_i
-        validate_rol    
+        $rol = gets.chomp.to_i
+           
     end
 
-    def play
-        puts "\nPlayer #{@rol} is playing!"
-        puts "Select a number in the cell"
+    def input_cell
+        @cell = nil
+        puts "\nSelect a number in the cell"
         @cell = gets.chomp.to_i
-        valid_move?
     end
 
     def again?
         puts "##################"
         puts "#PLAY AGAIN? (y/n)"
         puts "##################"
-        again = gets.chomp
-            if again == "y" 
-                @board=["1","2","3","4","5","6","7","8","9"]
-                get_inputs 
-            else 
-                puts "Adios Amigo!" 
-                exit
-            end
+        $again = gets.chomp
+        if $again == "y" || $again == "Y"
+            player = Player.new
+            player.validate_rol
+        elsif $again == "n" || $again == "N" 
+            puts "Adios Amigo!" 
+            exit
+        end
     end
 end

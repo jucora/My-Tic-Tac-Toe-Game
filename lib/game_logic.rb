@@ -1,31 +1,113 @@
-def print_board
-        puts "START GAME!"
-        puts "\n #{@board[0]} | #{@board[1]} | #{@board[2]} "
-        puts "-----------"
-        puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
-        puts "-----------"
-        puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
-    end
+require_relative '../bin/main'
+include UserInteraction
 
-def validate_rol
-        if @rol == 1 || @rol == 2
+class Rules
+    def winner?
+        #Horizontal Test
+        
+        if @board[0] === @draw && @board[1] === @draw && @board[2] === @draw
+            @board[0] = "-" 
+            @board[1] = "-" 
+            @board[2] = "-"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        elsif @board[3] === @draw && @board[4] === @draw && @board[5] === @draw
+            @board[3] = "-" 
+            @board[4] = "-" 
+            @board[5] = "-"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        elsif @board[6] === @draw && @board[7] === @draw && @board[8] === @draw
+            @board[6] = "-" 
+            @board[7] = "-" 
+            @board[8] = "-"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        end
+        
+        #Vertical Test
+        
+        if @board[0] === @draw && @board[3] === @draw && @board[6] === @draw
+            @board[0] = "|" 
+            @board[3] = "|" 
+            @board[6] = "|"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        elsif @board[1] === @draw && @board[4] === @draw && @board[7] === @draw
+            @board[1] = "|" 
+            @board[4] = "|" 
+            @board[7] = "|"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        elsif @board[2] === @draw && @board[5] === @draw && @board[8] === @draw
+            @board[2] = "|" 
+            @board[5] = "|" 
+            @board[8] = "|"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        end
+        
+        #Diagonal 1 Test
+        
+        if @board[0] === @draw && @board[4] === @draw && @board[8] === @draw
+            @board[0] = "\\" 
+            @board[4] = "\\" 
+            @board[8] = "\\"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        end
+        
+        #Diagonal 2 Test
+        
+        if @board[2] === @draw && @board[4] === @draw && @board[6] === @draw
+            @board[2] = "/" 
+            @board[4] = "/" 
+            @board[6] = "/"
+            print_last
+            puts "\nPlayer #{$rol} Wins"
+            again?
+        end
+        
+    end
+    
+    def game_over?
+        empty = 0
+        @board.each do |cell| 
+            empty += 1 if cell == "X" || cell == "O"
+        end
+        if empty == 9
             print_board
-            play
+            puts "Game Over"
+            again?
+        elsif winner?
+            print_board
         else
-            puts "Invalid option"
-            get_inputs
+            if $rol == 2 
+                $rol = 1 
+            else
+                $rol=2 
+            end
+            print_board
+            input_cell
         end
     end
-
-def valid_move? 
-    if @rol == 1
+    
+    def valid_move? 
+    if $rol == 1
         @draw = "X"
     else
         @draw = "O"
     end
     if @board[@cell-1] == "X" || @board[@cell-1] == "O"
-        puts "The cell is already taken"
-        play
+        puts "\n\n\n\n\n\n¡¡¡¡¡¡¡¡THE CELL IS ALREADY TAKEN!!!!!!!!"
+        print_board
     else
         case @cell
             when 1
@@ -48,113 +130,55 @@ def valid_move?
                 @board[8] = @draw
             else
                 puts "Invalid Option, please try again!"
-            play
+                input_cell
         end
+        winner?
+        game_over?
     end
-    winner?
-    game_over?
-end  
+    
+    end  
+end
 
-
-
-def winner?
-        
-        #Horizontal Test
-        
-        if @board[0] === @draw && @board[1] === @draw && @board[2] === @draw
-            @board[0] = "-" 
-            @board[1] = "-" 
-            @board[2] = "-"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        elsif @board[3] === @draw && @board[4] === @draw && @board[5] === @draw
-            @board[3] = "-" 
-            @board[4] = "-" 
-            @board[5] = "-"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        elsif @board[6] === @draw && @board[7] === @draw && @board[8] === @draw
-            @board[6] = "-" 
-            @board[7] = "-" 
-            @board[8] = "-"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        end
-        
-        #Vertical Test
-        
-        if @board[0] === @draw && @board[3] === @draw && @board[6] === @draw
-            @board[0] = "|" 
-            @board[3] = "|" 
-            @board[6] = "|"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        elsif @board[1] === @draw && @board[4] === @draw && @board[7] === @draw
-            @board[1] = "|" 
-            @board[4] = "|" 
-            @board[7] = "|"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        elsif @board[2] === @draw && @board[5] === @draw && @board[8] === @draw
-            @board[2] = "|" 
-            @board[5] = "|" 
-            @board[8] = "|"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        end
-        
-        #Diagonal 1 Test
-        
-        if @board[0] === @draw && @board[4] === @draw && @board[8] === @draw
-            @board[0] = "\\" 
-            @board[4] = "\\" 
-            @board[8] = "\\"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        end
-        
-        #Diagonal 2 Test
-        
-        if @board[2] === @draw && @board[4] === @draw && @board[6] === @draw
-            @board[2] = "/" 
-            @board[4] = "/" 
-            @board[6] = "/"
-            print_board
-            puts "\nPlayer #{@rol} Wins"
-            again?
-        end
+class Board < Rules 
+    def initialize (board)
+        @board = board
     end
 
+    def print_board
+        puts "\n\n\n===== Player #{$rol} is playing! ====="
+        puts "\n #{@board[0]} | #{@board[1]} | #{@board[2]} "
+        puts "-----------"
+        puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
+        puts "-----------"
+        puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
+        input_cell
+        valid_move?
+    end
+    
+    def print_last
+       puts "END OF GAME!"
+        puts "\n #{@board[0]} | #{@board[1]} | #{@board[2]} "
+        puts "-----------"
+        puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
+        puts "-----------"
+        puts " #{@board[6]} | #{@board[7]} | #{@board[8]} " 
+    end
+end
 
-def game_over?
-        empty = 0
-        @board.each do |cell| 
-            empty += 1 if cell == "X" || cell == "O"
-        end
-        if empty == 9
-            print_board
-            puts "Game Over"
-            again?
-        elsif winner?
-            print_board
+class Player
+    public
+    def validate_rol
+        get_rol
+        if $rol == 1 || $rol == 2
+            board = Board.new (["1","2","3","4","5","6","7","8","9"])
+            board.print_board
+            
         else
-            if @rol == 2 
-                @rol = 1 
-            else
-                @rol=2 
-            end
-            print_board
-            play
+            puts "\n\n\nNumber #{$rol} is not a valid option"
+            validate_rol
         end
     end
+end
 
-
-game = TicTacToe.new(["1","2","3","4","5","6","7","8","9"])
-game.get_inputs
+player = Player.new
+player.validate_rol
