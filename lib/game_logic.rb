@@ -1,14 +1,10 @@
 require_relative '../bin/main'
-
-
 #====================================================================
 # This is the class Player and is called every time a new game starts
 #====================================================================
-
 class Player
   include UserInteraction
-  public
-    
+  public   
   def validate_rol
     get_rol
     if @rol === 1 || @rol === 2
@@ -20,16 +16,12 @@ class Player
     end
   end
 end
-
-
 #===============================================================================================================================================
 # This is the class Rules. This class contains all rules of the game, so everytime a player plays, this class will verify if movements are valid
 # This class also checks if there is a winner or in case the game ends it will puts Game Over
 #===============================================================================================================================================
-
 class Rules < Player
   include UserInteraction
-  
   def winner?
     #Horizontal Test
     if @board[0] === @draw && @board[1] == @draw && @board[2] == @draw
@@ -98,8 +90,7 @@ class Rules < Player
         validate_rol 
       end
     end
-  end
-    
+  end    
   def game_over?
     empty = 0
     @board.each do |cell| 
@@ -122,7 +113,6 @@ class Rules < Player
     print_board
     input_cell
   end
-
   def valid_move? 
     if @rol == 1
       @draw = "X"
@@ -161,12 +151,9 @@ class Rules < Player
     end
   end  
 end
-
-
 #=================================================================================
 # This is the class Board and is called every time a player interact with the game
 #=================================================================================
-
 class Board < Rules
   include UserInteraction
   def initialize (board, rol, name_1, name_2)
@@ -175,7 +162,6 @@ class Board < Rules
     @name_1 = name_1
     @name_2 = name_2
   end
-
   def print_board
     if @rol == 1
       @name = @name_1
@@ -190,8 +176,7 @@ class Board < Rules
     puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
     input_cell
     valid_move?
-  end
-    
+  end    
   def print_last
     puts "END OF GAME!"
     puts "\n #{@board[0]} | #{@board[1]} | #{@board[2]} "
@@ -201,6 +186,5 @@ class Board < Rules
     puts " #{@board[6]} | #{@board[7]} | #{@board[8]} " 
   end
 end
-
 player = Player.new
 player.validate_rol
