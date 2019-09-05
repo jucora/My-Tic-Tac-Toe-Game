@@ -1,10 +1,10 @@
 require_relative '../bin/main'
+include UserInteraction
 #====================================================================
 # This is the class Player and is called every time a new game starts
 #====================================================================
 class Player
-  include UserInteraction
-  public   
+  #include UserInteraction   
   def validate_rol
     get_rol
     if @rol === 1 || @rol === 2
