@@ -1,7 +1,35 @@
 require_relative '../bin/main'
 include UserInteraction
 
-class Rules
+#====================================================================
+# This is the class Player and is called every time a new game starts
+#====================================================================
+
+class Player
+    public
+    def validate_rol
+        get_rol
+        if @rol === 1 || @rol === 2
+            board = Board.new ["1","2","3","4","5","6","7","8","9"], @rol, @name_1, @name_2
+            board.print_board
+            
+        else
+            puts "\n\n\nNumber #{@rol} is not a valid option"
+            validate_rol
+        end
+    end
+end
+
+
+
+
+
+#===============================================================================================================================================
+# This is the class Rules. This class contains all rules of the game, so everytime a player plays, this class will verify if movements are valid
+# This class also checks if there is a winner or in case the game ends it will puts Game Over
+#===============================================================================================================================================
+
+class Rules < Player
     def winner?
         #Horizontal Test
         
@@ -10,21 +38,21 @@ class Rules
             @board[1] = "-" 
             @board[2] = "-"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         elsif @board[3] === @draw && @board[4] === @draw && @board[5] === @draw
             @board[3] = "-" 
             @board[4] = "-" 
             @board[5] = "-"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         elsif @board[6] === @draw && @board[7] === @draw && @board[8] === @draw
             @board[6] = "-" 
             @board[7] = "-" 
             @board[8] = "-"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         end
         
@@ -35,21 +63,21 @@ class Rules
             @board[3] = "|" 
             @board[6] = "|"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         elsif @board[1] === @draw && @board[4] === @draw && @board[7] === @draw
             @board[1] = "|" 
             @board[4] = "|" 
             @board[7] = "|"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         elsif @board[2] === @draw && @board[5] === @draw && @board[8] === @draw
             @board[2] = "|" 
             @board[5] = "|" 
             @board[8] = "|"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         end
         
@@ -60,7 +88,7 @@ class Rules
             @board[4] = "\\" 
             @board[8] = "\\"
             print_last
-            puts "\nPlayer #{$rol} Wins"
+            puts "\nPlayer #{@name} Wins"
             again?
         end
         
@@ -71,8 +99,11 @@ class Rules
             @board[4] = "/" 
             @board[6] = "/"
             print_last
-            puts "\nPlayer #{$rol} Wins"
-            again?
+            puts "\nPlayer #{@name} Wins"
+            answer = again?
+            if answer === true
+                validate_rol 
+            end
         end
         
     end
@@ -80,27 +111,29 @@ class Rules
     def game_over?
         empty = 0
         @board.each do |cell| 
-            empty += 1 if cell == "X" || cell == "O"
+             if cell === "X" || cell === "O" 
+                 empty += 1 
+             end
         end
         if empty == 9
-            print_board
-            puts "Game Over"
+            puts "\nGAME OVER, NO WINNERS THIS TIME"
+            print_last
             again?
-        elsif winner?
-            print_board
-        else
-            if $rol == 2 
-                $rol = 1 
-            else
-                $rol=2 
-            end
-            print_board
-            input_cell
         end
+        
+        if @rol === 2 
+            @rol = 1
+            @name = @name_1
+        else
+            @rol =2
+            @name = @name_2
+        end
+        print_board
+        input_cell
     end
     
     def valid_move? 
-    if $rol == 1
+    if @rol == 1
         @draw = "X"
     else
         @draw = "O"
@@ -139,13 +172,26 @@ class Rules
     end  
 end
 
+
+#=================================================================================
+# This is the class Board and is called every time a player interact with the game
+#=================================================================================
+
 class Board < Rules 
-    def initialize (board)
+    def initialize (board, rol, name_1, name_2)
         @board = board
+        @rol = rol
+        @name_1 = name_1
+        @name_2 = name_2
     end
 
     def print_board
-        puts "\n\n\n===== Player #{$rol} is playing! ====="
+        if @rol == 1
+            @name = @name_1
+        elsif @rol == 2
+            @name = @name_2
+        end
+        puts "\n\n\n===== #{@name} is playing! ====="
         puts "\n #{@board[0]} | #{@board[1]} | #{@board[2]} "
         puts "-----------"
         puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
@@ -162,21 +208,6 @@ class Board < Rules
         puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
         puts "-----------"
         puts " #{@board[6]} | #{@board[7]} | #{@board[8]} " 
-    end
-end
-
-class Player
-    public
-    def validate_rol
-        get_rol
-        if $rol == 1 || $rol == 2
-            board = Board.new (["1","2","3","4","5","6","7","8","9"])
-            board.print_board
-            
-        else
-            puts "\n\n\nNumber #{$rol} is not a valid option"
-            validate_rol
-        end
     end
 end
 

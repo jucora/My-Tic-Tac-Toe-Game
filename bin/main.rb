@@ -1,31 +1,34 @@
 module UserInteraction
-    def get_rol
+    def self.get_rol
         puts "\nWELCOME TO THE TIC TAC TOE GAME"
+        puts "Please enter the name of player 1"
+        @name_1 = gets.chomp
+        @rol = 1
+        puts "Please enter the name of player 2"
+        @name_2 = gets.chomp
         puts "==========================="
-        puts "Which player do you prefer?"
-        puts "1 for X or 2 for O"
-        puts "==========================="
-        $rol = gets.chomp.to_i
-           
+        puts "\n#{@name_1} VS #{@name_2}"
     end
-
-    def input_cell
+    UserInteraction.get_rol
+    def self.input_cell
         @cell = nil
         puts "\nSelect a number in the cell"
         @cell = gets.chomp.to_i
     end
 
-    def again?
+    def self.again?
         puts "##################"
-        puts "#PLAY AGAIN? (y/n)"
+        puts "\n#PLAY AGAIN? (y/n)"
         puts "##################"
-        $again = gets.chomp
-        if $again == "y" || $again == "Y"
-            player = Player.new
-            player.validate_rol
-        elsif $again == "n" || $again == "N" 
-            puts "Adios Amigo!" 
+        @again = gets.chomp
+        if @again === "y" || @again === "Y"
+            validate_rol
+        elsif @again === "n" || @again === "N"
+            puts "Adios Amigo!"
             exit
+        else
+            puts "Invalid option, please try again! "
+            again?
         end
     end
 end
