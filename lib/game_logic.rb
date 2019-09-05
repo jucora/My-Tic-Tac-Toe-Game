@@ -1,5 +1,5 @@
-require_relative '../bin/main'
-include UserInteraction
+#require_relative '../bin/main'
+#include UserInteraction
 #====================================================================
 # This is the class Player and is called every time a new game starts
 #====================================================================

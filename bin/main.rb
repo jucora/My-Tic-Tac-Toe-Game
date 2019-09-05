@@ -1,3 +1,5 @@
+require_relative '../lib/game_logic'
+
 module UserInteraction
   def get_rol
     puts "\nWELCOME TO THE TIC TAC TOE GAME"
